@@ -1,0 +1,5 @@
+fastapi
+pypdf2
+vertexai
+pymongo
+python-dotenv
