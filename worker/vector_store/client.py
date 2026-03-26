@@ -5,7 +5,8 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from typing import List, Dict, Any, Optional
 from dataclasses import asdict
-from src.schemas import EmbeddingDocument
+from shared.schemas import EmbeddingDocument
+
 
 class MongoVectorDB:
     """

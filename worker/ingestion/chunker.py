@@ -1,5 +1,5 @@
 from typing import List
-from src.chunking_utils import get_best_separator
+from worker.ingestion.chunking_utils import get_best_separator
 
 
 class SemanticChunker:

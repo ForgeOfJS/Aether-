@@ -1,17 +1,16 @@
 import os
 from dotenv import load_dotenv
 import vertexai
-from vertexai.language_models import TextEmbeddingInput, TextEmbeddingModel
 
-from src.pdf_extractor import PDFExtractor
-from src.semantic_chunker import SemanticChunker
-from src.mongo_utils import MongoVectorDB
-from src.chunking_utils import get_custom_separators
+from worker.ingestion.extractor import PDFExtractor
+from worker.ingestion.chunker import SemanticChunker
+from worker.vector_store.client import MongoVectorDB
+from worker.ingestion.chunking_utils import get_custom_separators
+from worker.embeddings.generator import getEmbeddingsPerChunck
 
 load_dotenv()
 
 def main() -> None:
-
     
     vertexai.init(project=os.environ.get("PROJECT_ID"), location=os.environ.get("LOCATION"))
 
@@ -50,22 +49,6 @@ def main() -> None:
         metadata={"source": source_document}
     )
     print("Successfully stored chunks and embeddings!")
-
-def getEmbeddingsPerChunck(chunks: list[str]) -> list[list[float]]:
-    allEmbedings = []
-
-    for chunk in chunks:
-        model = TextEmbeddingModel.from_pretrained("text-embedding-004")
-
-        text_input = TextEmbeddingInput(
-            text=chunk,
-            task_type="RETRIEVAL_DOCUMENT"
-        )
-
-        embeddings = model.get_embeddings([text_input])
-        allEmbedings.append(embeddings[0].values)
-
-    return allEmbedings
 
 
 if __name__ == "__main__":
